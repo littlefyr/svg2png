@@ -80,6 +80,36 @@ specify("Scales 5.svg correctly despite viewBox + fixed width/height", function 
     });
 });
 
+// Test 6: preserveAspectRatio="meet none"
+
+specify("Scale 6.svg to 90×150 honoring with preserveAspectRatio=\"meet none\"", function (done){
+    svg2png(relative("images/6.svg"), relative("images/6-port--actual.png"), { width:90, height:150 }, function (err) {
+        if (err) {
+            return done(err);
+        }; 
+
+        var expected = fs.readFileSync(relative("images/6-port-expected.png"));
+        var actual = fs.readFileSync(relative("images/6-port--actual.png"));
+
+        actual.should.deep.equal(expected);
+    });
+}); 
+
+specify("Scale 6.svg to 180×90 honoring with preserveAspectRatio=\"meet none\"", function (done){
+    svg2png(relative("images/6.svg"), relative("images/6-land-actual.png"), { width:180, height:90 }, function (err) {
+        if (err) {
+            return done(err);
+        }; 
+
+        var expected = fs.readFileSync(relative("images/6-land-expected.png"));
+        var actual = fs.readFileSync(relative("images/6-land-actual.png"));
+
+        actual.should.deep.equal(expected);
+    });
+}); 
+
+
+
 it("should pass through errors that occur while calculating dimensions", function (done) {
     svg2png(relative("images/invalid.svg"), relative("images/invalid-actual.png"), function (err) {
         should.exist(err);
@@ -104,6 +134,8 @@ after(function () {
     fs.unlink(relative("images/3-actual.png"));
     fs.unlink(relative("images/4-actual.png"));
     fs.unlink(relative("images/5-actual.png"));
+    fs.unlink(relative("images/6-port-actual.png"));
+    fs.unlink(relative("images/6-land-actual.png"));
 });
 
 function relative(relPath) {
